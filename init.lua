@@ -283,7 +283,7 @@ bens_gear.create_ore_description = function(ore_data)
 		av_mining_speed = av_mining_speed + bens_gear.calculate_average_group(thing.times)
 	end
 	av_mining_speed = av_mining_speed / av_amount
-	val = val .. "\nAverage Mining Speed: " .. round_to_two(av_mining_speed)
+	val = val .. "\nAverage Mining Time: " .. round_to_two(av_mining_speed)
 	val = val .. "\nUses: " .. ore_data.uses
 	val = val .. "\nSword Damage: " .. ore_data.damage_groups_sword.fleshy
 	val = val .. "\nAttack Speed: " .. ore_data.full_punch_interval
@@ -376,7 +376,7 @@ bens_gear.ore_data_template = {
 	full_punch_interval = 1,
 	uses = 20,
 	flammable = true,
-	groupcaps = { --the groupcaps for the tool. durability is typically used instead of "uses" so there is no need to define it
+	groupcaps = { --the groupcaps for the tool. uses is typically used instead of "uses" so there is no need to define it
 		crumbly = {times={[1]=3.00, [2]=1.60, [3]=0.60}, maxlevel=1},
 		cracky = {times={[3]=1.60}, maxlevel=1},
 		choppy = {times={[2]=3.00, [3]=1.60}, maxlevel=1},
@@ -523,8 +523,13 @@ bens_gear.search_for_material = function(mat_item)
 	return nil
 end
 
-local function should_ignore_item()
-
+local function should_ignore_item(item)
+	for i=1, #items_to_ignore do
+		if (items_to_ignore[i] == item) then
+			return true
+		end
+	end
+	return false
 end
 
 
@@ -534,12 +539,12 @@ minetest.register_on_mods_loaded(function()
 		local split_result = split(to_process,":")
 		local split_actual = split_result[2]
 		for i, thing in pairs(minetest.registered_nodes) do
-			if (thing.groups[split_actual]) then
+			if (thing.groups[split_actual] and not should_ignore_item(i)) then
 				minetest.override_item(i,{description=thing.description .. bens_gear.create_ore_description(bens_gear.search_for_material(to_process))})
 			end
 		end
 		for i, thing in pairs(minetest.registered_craftitems) do
-			if (thing.groups[split_actual]) then
+			if (thing.groups[split_actual] and not should_ignore_item(i)) then
 				minetest.override_item(i,{description=thing.description .. bens_gear.create_ore_description(bens_gear.search_for_material(to_process))})
 			end
 		end

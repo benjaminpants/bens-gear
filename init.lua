@@ -487,7 +487,15 @@ local farming_exists = mod_loaded("farming")
 if (farming_exists) then
 	bens_gear.reduce_hoe_stat = function(id)
 		--TODO: actually reduce hoe stats instead of literally deleting the hoe but reducing stats on those things is so torturous it just isn't worth it right now.
+		if (minetest.registered_tools[id] == nil) then
+			return false
+		end
 		minetest.unregister_item(id)
+		return true
+	end
+else
+	bens_gear.reduce_hoe_stat = function(id)
+		--do nothing :)
 	end
 end
 
@@ -522,6 +530,10 @@ dofile(default_path .. "/blueprint_bundle.lua")
 
 if (mod_loaded("cloud_items")) then
 	dofile(default_path .. "/support_cloud_items.lua")
+end
+
+if (mod_loaded("moreores")) then
+	dofile(default_path .. "/support_moreores.lua")
 end
 
 

@@ -42,6 +42,12 @@ bens_gear.add_ore({
 		tool_destroyed = nil,
 		tool_attempt_place = nil,
 	},
-	pre_finalization_function = nil --this function should be called RIGHT BEFORE the tool/item/whatever gets created, so that the material can add its own custom handling/data
+	pre_finalization_function = function(tool_type,data)
+		if (tool_type == "sword") then
+			data.range = 5
+		end
+
+	end
+	--this function should be called RIGHT BEFORE the tool/item/whatever gets created, so that the material can add its own custom handling/data
 	--it should be called like this: func(tool_id,data)
 })

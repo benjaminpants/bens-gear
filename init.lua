@@ -162,7 +162,10 @@ minetest.register_on_dignode(function(pos, oldnode, digger)
 	end
 	local current_tool = digger:get_wielded_item():get_name()
 	if (bens_gear.mine_tool_functions[current_tool] ~= nil) then
-		bens_gear.mine_tool_functions[current_tool](pos,oldnode,digger)
+		local output = bens_gear.mine_tool_functions[current_tool](pos,oldnode,digger)
+		if (output ~= nil) then
+			return output
+		end
 	end
 	
 
@@ -323,8 +326,18 @@ end
 
 
 
-bens_gear.add_tool_generic_description = function(tool_data,ore_data,rod_data,mining)
-	return (ore_data.description_append or "") .. "\nUses: " .. math.ceil(ore_data.uses * rod_data.uses_multiplier) .. "\nAvg Mining Speed: " .. round_to_two(bens_gear.calculate_average_group(tool_data.tool_capabilities.groupcaps[mining].times)) .. "\nDamage: " .. bens_gear.calculate_average_group(tool_data.tool_capabilities.damage_groups) .. "\nAttack Speed: " .. round_to_two(tool_data.tool_capabilities.full_punch_interval)
+bens_gear.add_tool_generic_description = function(tool_data,ore_data,rod_data,mining,uses)
+	local mining_speed = ""
+	local tool_cap_stuff = ""
+	local tool_caps_available = (tool_data.tool_capabilities ~= nil)
+	if (mining ~= nil) then
+		mining_speed = "\nAvg Mining Speed: " .. round_to_two(bens_gear.calculate_average_group(tool_data.tool_capabilities.groupcaps[mining].times))
+	end
+	if (tool_caps_available) then
+		tool_cap_stuff = "\nDamage: " .. bens_gear.calculate_average_group(tool_data.tool_capabilities.damage_groups) .. "\nAttack Speed: " .. round_to_two(tool_data.tool_capabilities.full_punch_interval)
+	end
+	
+	return (ore_data.description_append or "") .. "\nUses: " .. uses .. mining_speed .. tool_cap_stuff
 end
 
 
@@ -459,14 +472,30 @@ bens_gear.create_example_item = function(id,name,texture)
 
 end
 
+
+
+local function mod_loaded(str)
+  if minetest.get_modpath(str) ~= nil then
+    return true
+  else
+    return false
+  end
+end
+
+local farming_exists = mod_loaded("farming")
+
+if (farming_exists) then
+	bens_gear.reduce_hoe_stat = function(id)
+		--TODO: actually reduce hoe stats instead of literally deleting the hoe but reducing stats on those things is so torturous it just isn't worth it right now.
+		minetest.unregister_item(id)
+	end
+end
+
 --bens_gear.add_ore(bens_gear.ore_data_template)
 
 --bens_gear.add_rod(bens_gear.rod_data_template)
 
 bens_gear.create_example_item("example_charm","(Optional)A Charm", "default_copper_lump.png")
-
-
-
 
 dofile(default_path .. "/pickaxes.lua")
 
@@ -476,6 +505,13 @@ dofile(default_path .. "/shovels.lua")
 
 dofile(default_path .. "/swords.lua")
 
+if (farming_exists) then
+	dofile(default_path .. "/hoes.lua")
+	bens_gear.reduce_hoe_stat("farming:hoe_wood")
+	bens_gear.reduce_hoe_stat("farming:hoe_stone")
+	bens_gear.reduce_hoe_stat("farming:hoe_steel")
+end
+
 dofile(default_path .. "/woods.lua")
 
 dofile(default_path .. "/vanilla_materials.lua")
@@ -483,6 +519,10 @@ dofile(default_path .. "/vanilla_materials.lua")
 dofile(default_path .. "/rods.lua")
 
 dofile(default_path .. "/blueprint_bundle.lua")
+
+if (mod_loaded("cloud_items")) then
+	dofile(default_path .. "/support_cloud_items.lua")
+end
 
 
 local mtg_materials = {"wood","stone","steel","bronze","mese","diamond"}

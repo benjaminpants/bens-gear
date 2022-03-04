@@ -128,7 +128,7 @@ if (charm_data ~= nil) then
 	charm_data.charm_function("axe",axe_data,ore_data,rod_data,pick_name)
 end
 
-axe_data.description = axe_data.description .. bens_gear.add_tool_generic_description(axe_data,ore_data,rod_data,"choppy")
+axe_data.description = axe_data.description .. bens_gear.add_tool_generic_description(axe_data,ore_data,rod_data,"choppy",axe_data.tool_capabilities.groupcaps.choppy.uses)
 
 
 bens_gear.mine_tool_functions[pick_name] = axe_data.on_node_mine

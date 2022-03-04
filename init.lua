@@ -325,7 +325,7 @@ bens_gear.add_ore_iterate = function(iterate)
 end
 
 bens_gear.register_on_all_materials_registered = function(func)
-	table.insert(on_all_materials_registered,func)
+	table.insert(bens_gear.on_all_materials_registered,func)
 end
 
 

@@ -12,6 +12,8 @@ bens_gear.tool_iterates = {}
 bens_gear.ore_iterates = {}
 bens_gear.mine_tool_functions = {}
 
+bens_gear.on_all_materials_registered = {}
+
 bens_gear.features = {
 	tool_destroyed_implementation = false
 
@@ -322,6 +324,10 @@ bens_gear.add_ore_iterate = function(iterate)
 	table.insert(bens_gear.ore_iterates,iterate)
 end
 
+bens_gear.register_on_all_materials_registered = function(func)
+	table.insert(on_all_materials_registered,func)
+end
+
 
 bens_gear.can_tool_be_made = function(typ, ore_data)
 	local contains_me = false
@@ -611,6 +617,9 @@ minetest.register_on_mods_loaded(function()
 		end
 	end
 	groups_to_process = nil
+	for i=1, #on_all_materials_registered do
+		on_all_materials_registered[i]()
+	end
 	for i=1, #bens_gear.ores do
 		for l=1, #bens_gear.ore_iterates do
 			bens_gear.ore_iterates[l](bens_gear.ores[i])

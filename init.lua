@@ -26,6 +26,12 @@ local items_to_ignore = {}
 
 
 
+if minetest.get_modpath("default") then
+	mtg_mods_installed = true
+else
+	mtg_mods_installed = false
+end
+
 
 
 minetest.register_craftitem("bens_gear:blueprint_paper", {
@@ -55,22 +61,38 @@ minetest.register_craftitem("bens_gear:blueprint_paper_light", {
 	groups = {paper=1}
 })
 
-
-minetest.register_craft({
+if mtg_mods_installed:
+	minetest.register_craft({
 		type = "shapeless",
 		output = "bens_gear:blueprint_paper_light 1",
 		recipe = {
 			"bens_gear:blueprint_paper", "dye:white"
 		}
-})
-
-minetest.register_craft({
+	})
+	minetest.register_craft({
 		type = "shapeless",
 		output = "bens_gear:blueprint_paper 3",
 		recipe = {
 			"default:paper", "default:paper", "default:paper", "dye:blue"
 		}
-})
+	})
+else
+	minetest.register_craft({
+		type = "shapeless",
+		output = "bens_gear:blueprint_paper_light 1",
+		recipe = {
+			"bens_gear:blueprint_paper", "group:dye_blue"
+		}
+	})
+	minetest.register_craft({
+		type = "shapeless",
+		output = "bens_gear:blueprint_paper 3",
+		recipe = {
+			"group:paper", "group:paper", "group:paper", "group:dye_blue"
+		}
+	})
+end
+
 
 
 bens_gear.create_blueprint_and_template = function(tool_type, tool_display, outline_tex, recipe_temp, material_needed) --helper function for creating templates and blueprints, i got sick of copying and pasting the same code can you blame me
@@ -90,6 +112,7 @@ bens_gear.create_blueprint_and_template = function(tool_type, tool_display, outl
 		return
 	end
 	--very high quality I JUST WANNA GO TO BED code right here
+	--haha its literally tomorrow for me
 	--this copies a table. very poorly. but it works.
 	local blueprint_recipe = {{recipe_temp[1][1],recipe_temp[1][2],recipe_temp[1][3]},{recipe_temp[2][1],recipe_temp[2][2],recipe_temp[2][3]},{recipe_temp[3][1],recipe_temp[3][2],recipe_temp[3][3]}}
 	
@@ -524,26 +547,28 @@ end
 
 bens_gear.create_example_item("example_charm","(Optional)A Charm", "default_copper_lump.png")
 
-dofile(default_path .. "/pickaxes.lua")
+if mtg_mods_installed then
+	dofile(default_path .. "/pickaxes.lua")
 
-dofile(default_path .. "/axes.lua")
+	dofile(default_path .. "/axes.lua")
 
-dofile(default_path .. "/shovels.lua")
+	dofile(default_path .. "/shovels.lua")
 
-dofile(default_path .. "/swords.lua")
+	dofile(default_path .. "/swords.lua")
 
-if (farming_exists) then
-	dofile(default_path .. "/hoes.lua")
-	bens_gear.reduce_hoe_stat("farming:hoe_wood")
-	bens_gear.reduce_hoe_stat("farming:hoe_stone")
-	bens_gear.reduce_hoe_stat("farming:hoe_steel")
+	if (farming_exists) then
+		dofile(default_path .. "/hoes.lua")
+		bens_gear.reduce_hoe_stat("farming:hoe_wood")
+		bens_gear.reduce_hoe_stat("farming:hoe_stone")
+		bens_gear.reduce_hoe_stat("farming:hoe_steel")
+	end
+
+	dofile(default_path .. "/woods.lua")
+
+	dofile(default_path .. "/vanilla_materials.lua")
+
+	dofile(default_path .. "/rods.lua")
 end
-
-dofile(default_path .. "/woods.lua")
-
-dofile(default_path .. "/vanilla_materials.lua")
-
-dofile(default_path .. "/rods.lua")
 
 dofile(default_path .. "/blueprint_bundle.lua")
 
@@ -555,14 +580,15 @@ if (mod_loaded("moreores")) then
 	dofile(default_path .. "/support_moreores.lua")
 end
 
+if mtg_mods_installed then
+	local mtg_materials = {"wood","stone","steel","bronze","mese","diamond"}
 
-local mtg_materials = {"wood","stone","steel","bronze","mese","diamond"}
-
-for i=1, #mtg_materials do
-	bens_gear.reduce_tool_stat("default:pick_" .. mtg_materials[i])
-	bens_gear.reduce_tool_stat("default:axe_" .. mtg_materials[i])
-	bens_gear.reduce_tool_stat("default:shovel_" .. mtg_materials[i])
-	bens_gear.reduce_tool_stat("default:sword_" .. mtg_materials[i])
+	for i=1, #mtg_materials do
+		bens_gear.reduce_tool_stat("default:pick_" .. mtg_materials[i])
+		bens_gear.reduce_tool_stat("default:axe_" .. mtg_materials[i])
+		bens_gear.reduce_tool_stat("default:shovel_" .. mtg_materials[i])
+		bens_gear.reduce_tool_stat("default:sword_" .. mtg_materials[i])
+	end
 end
 
 

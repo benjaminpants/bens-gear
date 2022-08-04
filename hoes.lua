@@ -40,6 +40,7 @@ minetest.register_craft({
 
 
 bens_gear.add_ore_iterate(function(ore_data)
+	if (not bens_gear.can_tool_be_made("hoe",ore_data)) then return end
 	local pick_head_texture = bens_gear.get_viable_tool_texture("hoe","bens_gear_hoe_",ore_data.tool_textures,ore_data.color)
 	minetest.register_craftitem(":bens_gear:hoe_head_" .. ore_data.internal_name, {
 	description = S("@1 Hoe Head", ore_data.display_name),

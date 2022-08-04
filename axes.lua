@@ -39,6 +39,7 @@ minetest.register_craft({
 })
 
 bens_gear.add_ore_iterate(function(ore_data)
+	if (not bens_gear.can_tool_be_made("axe",ore_data)) then return end
 	local axe_head_texture = bens_gear.get_viable_tool_texture("axe","bens_gear_axe_",ore_data.tool_textures,ore_data.color)
 	minetest.register_craftitem(":bens_gear:axe_head_" .. ore_data.internal_name, {
 	description = S("@1 Axe Head", ore_data.display_name),

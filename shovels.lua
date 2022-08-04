@@ -39,6 +39,7 @@ minetest.register_craft({
 })
 
 bens_gear.add_ore_iterate(function(ore_data)
+	if (not bens_gear.can_tool_be_made("shovel",ore_data)) then return end
 	local pick_head_texture = bens_gear.get_viable_tool_texture("shovel","bens_gear_shovel_",ore_data.tool_textures,ore_data.color)
 	minetest.register_craftitem(":bens_gear:shovel_head_" .. ore_data.internal_name, {
 	description = S("@1 Shovel Head", ore_data.display_name),

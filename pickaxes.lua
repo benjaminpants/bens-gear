@@ -40,6 +40,7 @@ minetest.register_craft({
 
 
 bens_gear.add_ore_iterate(function(ore_data)
+	if (not bens_gear.can_tool_be_made("pickaxe",ore_data)) then return end
 	local pick_head_texture = bens_gear.get_viable_tool_texture("pickaxe","bens_gear_pick_",ore_data.tool_textures,ore_data.color)
 	minetest.register_craftitem(":bens_gear:pickaxe_head_" .. ore_data.internal_name, {
 	description = S("@1 Pickaxe Head", ore_data.display_name),

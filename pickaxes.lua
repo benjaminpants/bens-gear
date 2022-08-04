@@ -124,6 +124,10 @@ pick_data.on_place = ore_data.additional_functions["tool_attempt_place"]
 
 pick_data.on_node_mine = ore_data.additional_functions["node_mined"]
 
+if (rod_data.pre_finalization_function ~= nil) then
+	rod_data.pre_finalization_function("pickaxe",pick_data,pick_name)
+end
+
 if (ore_data.pre_finalization_function ~= nil) then
 	ore_data.pre_finalization_function("pickaxe",pick_data,pick_name)
 end

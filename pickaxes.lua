@@ -118,6 +118,8 @@ local pick_data = {
 
 pick_data.tool_capabilities.groupcaps.cracky.uses = math.ceil(ore_data.uses * rod_data.uses_multiplier)
 
+pick_data.after_use = ore_data.additional_functions.after_use
+
 pick_data.on_place = ore_data.additional_functions["tool_attempt_place"]
 
 pick_data.on_node_mine = ore_data.additional_functions["node_mined"]

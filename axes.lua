@@ -122,6 +122,8 @@ axe_data.on_place = ore_data.additional_functions["tool_attempt_place"]
 
 axe_data.on_node_mine = ore_data.additional_functions["node_mined"]
 
+axe_data.after_use = ore_data.additional_functions.after_use
+
 if (ore_data.pre_finalization_function ~= nil) then
 	ore_data.pre_finalization_function("axe",axe_data,pick_name)
 end

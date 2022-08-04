@@ -428,6 +428,7 @@ bens_gear.ore_data_template = {
 		node_mined = nil,
 		tool_destroyed = nil,
 		tool_attempt_place = nil,
+		after_use = nil
 	},
 	pre_finalization_function = nil --this function should be called RIGHT BEFORE the tool/item/whatever gets created, so that the material can add its own custom handling/data
 	--it should be called like this: func(tool_id,data)
@@ -553,6 +554,10 @@ end
 
 if (mod_loaded("moreores")) then
 	dofile(default_path .. "/support_moreores.lua")
+end
+
+if (mod_loaded("nether")) then
+	dofile(default_path .. "/support_nether.lua")
 end
 
 

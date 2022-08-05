@@ -561,6 +561,11 @@ if (mod_loaded("nether")) then
 	dofile(default_path .. "/support_nether.lua")
 end
 
+if (mod_loaded("ethereal")) then
+	dofile(default_path .. "/support_ethereal.lua")
+end
+
+
 
 local mtg_materials = {"wood","stone","steel","bronze","mese","diamond"}
 

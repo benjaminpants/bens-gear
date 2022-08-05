@@ -100,6 +100,10 @@ end
 
 temp_groups["not_in_creative_inventory"] = 1
 
+temp_groups["beng_o_" .. ore_data.internal_name] = 1
+
+temp_groups["beng_r_" .. rod_data.internal_name] = 1
+
 local axe_data = {
 	description = S("@1 Axe",ore_data.display_name),
 	short_description = S("@1 Axe",ore_data.display_name),

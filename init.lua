@@ -565,6 +565,10 @@ if (mod_loaded("ethereal")) then
 	dofile(default_path .. "/support_ethereal.lua")
 end
 
+if (mod_loaded("draconis")) then
+	dofile(default_path .. "/support_dragon.lua")
+end
+
 
 
 local mtg_materials = {"wood","stone","steel","bronze","mese","diamond"}

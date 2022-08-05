@@ -8,7 +8,7 @@ bens_gear.reduce_tool_stat("ethereal:sword_crystal")
 bens_gear.add_ore({
 	internal_name = "ethereal_crystal",
 	display_name = S("Crystal"),
-	item_name = "nether:nether_ingot",
+	item_name = "ethereal:crystal_ingot",
 	max_drop_level = 3,
 	damage_groups_any = {fleshy=4},
 	damage_groups_sword = {fleshy=10},

@@ -88,7 +88,7 @@ for i=1, 2 do
     local col = "CEBFBB"
     if (e == "ice") then
         name = S("Ice-Forged Draconic Steel")
-        col = "DDD0CD"
+        col = "CDE4E8"
     end
     bens_gear.add_ore({
         internal_name = "draconis_" .. e .. "steel",
